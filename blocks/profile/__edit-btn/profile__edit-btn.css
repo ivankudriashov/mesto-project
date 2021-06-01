@@ -1,0 +1,9 @@
+.profile__edit-btn {
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border: 1px solid #FFFFFF;
+  margin-left: 18px;
+  background: url(../../../icons/arrow.svg) center no-repeat;
+  cursor: pointer;
+}

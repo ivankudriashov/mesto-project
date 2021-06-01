@@ -1,0 +1,30 @@
+.profile__add-btn {
+  position: relative;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 2px;
+  width: 150px;
+  height: 50px;
+  background: #000;
+  cursor: pointer;
+}
+
+.profile__add-btn::after {
+  content:'';
+  position: absolute;
+  top: 14px;
+  left: 74px;
+  width: 2px;
+  height: 22px;
+  background: #fff;
+}
+
+.profile__add-btn::before {
+  content:'';
+  position: absolute;
+  top: 24px;
+  left: 64px;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+}

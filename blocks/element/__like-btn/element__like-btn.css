@@ -1,0 +1,7 @@
+.element__like-btn {
+  background: url(../../../icons/heart.svg) center no-repeat;
+  width: 25px;
+  height: 19px;
+  border: none;
+  cursor: pointer;
+}
