@@ -3,3 +3,12 @@
   grid-template-columns: 120px 1fr;
   column-gap: 30px;
 }
+
+@media all and (max-width: 500px) {
+  .profile__wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 26px;
+  }
+}
+

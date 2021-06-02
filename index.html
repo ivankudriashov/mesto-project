@@ -13,6 +13,7 @@
   <div class="page">
     <header class="header page__block-centering">
       <div class="header__logo"></div>
+      <div class="header__line"></div>
     </header>
     <main class="content">
       <section class="profile page__block-centering">
@@ -31,7 +32,7 @@
             <img src="./images/places_foto/karachaevsk.jpg" alt="старая церковь" class="element__image">
             <div class="element__wrapper">
               <h2 class="element__title">Карачаевск</h2>
-              <button class="element__like-btn"></button>
+              <button class="element__like-btn element__like-btn_active"></button>
             </div>
           </li>
           <li class="element">
@@ -75,15 +76,15 @@
     <footer class="footer page__block-centering">
       <address class="footer__copyright">© 2021 Mesto Russia</address>
     </footer>
-    <div class="overlay">
-      <div class="modal" id="consultation">
-          <div class="modal__close">&times;</div>
-          <div class="modal__title">Просто заполните форму заявки</div>
-          <form class="modal__form" action="#">
-              <input name="name" placeholder="Ваше имя" type="text">
-              <input name="phone" placeholder="Ваш телефон">
-              <button class="modal__btn">Сохранить</button>
-          </form>
+    <div class="popup">
+      <div class="popup__container">
+        <div class="popup__close"></div>
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <form class="popup__form" action="#">
+            <input name="name" placeholder="Ваше имя" type="text" required class="popup__form-item">
+            <input name="status" placeholder="Ваш статус" type="text" class="popup__form-item">
+            <button type="submit" class="popup__btn">Сохранить</button>
+        </form>
       </div>
     </div>
   </div>

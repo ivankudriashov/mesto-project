@@ -5,3 +5,16 @@
   line-height: 22px;
   color: #FFFFFF;
 }
+
+@media all and (max-width: 767px) {
+  .profile__description {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .profile__description {
+    text-align: center;
+  }
+}

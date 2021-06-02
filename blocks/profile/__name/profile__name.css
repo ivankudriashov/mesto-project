@@ -2,6 +2,17 @@
   margin: 0;
   font-weight: 500;
   font-size: 42px;
-  line-height: 48px;
+  line-height: 42px;
   color: #FFFFFF;
+  padding-bottom: 16px;
 }
+
+@media all and (max-width: 767px) {
+  .profile__name {
+    font-size: 27px;
+    line-height: 27px;
+    text-align: center;
+    padding-bottom: 14px;
+  }
+}
+

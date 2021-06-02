@@ -5,3 +5,7 @@
   border: none;
   cursor: pointer;
 }
+
+.element__like-btn:hover {
+  opacity: 0.5;
+}

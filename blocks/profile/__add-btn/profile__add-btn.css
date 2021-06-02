@@ -28,3 +28,31 @@
   height: 2px;
   background: #fff;
 }
+
+.profile__add-btn:hover {
+  opacity: 0.6;
+}
+
+@media all and (max-width: 767px) {
+  .profile__add-btn {
+    margin-top: 36px;
+    width: 282px;
+  }
+
+  .profile__add-btn::after {
+    content:'';
+    top: 17px;
+    left: 140px;
+    height: 16px;
+    background: #fff;
+  }
+
+  .profile__add-btn::before {
+    content:'';
+    position: absolute;
+    top: 24px;
+    left: 133px;
+    width: 16px;
+    background: #fff;
+  }
+}

@@ -7,3 +7,14 @@
   background: url(../../../icons/arrow.svg) center no-repeat;
   cursor: pointer;
 }
+
+.profile__edit-btn:hover {
+  opacity: 0.6;
+}
+
+@media all and (max-width: 767px) {
+  .profile__edit-btn {
+    width: 18px;
+    height: 18px;
+  }
+}
