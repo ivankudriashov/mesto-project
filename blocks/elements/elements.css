@@ -3,17 +3,8 @@
   padding-top: 50px;
 }
 
-@media all and (max-width: 1023px) {
-  .elements {
-    padding-left: 35px;
-    padding-right: 35px;
-  }
-}
-
 @media all and (max-width: 425px) {
   .elements {
     padding-top: 36px;
-    padding-left: 19px;
-    padding-right: 19px;
   }
 }

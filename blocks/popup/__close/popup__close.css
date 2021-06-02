@@ -1,11 +1,13 @@
 .popup__close {
   position: absolute;
-  background: url(../../../icons/close_icon.svg) center no-repeat;
+  background: url(../../../images/icons/close_icon.svg) center no-repeat;
   width: 40px;
   height: 40px;
   top: -40px;
   right: -40px;
   cursor: pointer;
+  padding: 0;
+  border: none;
 }
 
 .popup__close:hover {

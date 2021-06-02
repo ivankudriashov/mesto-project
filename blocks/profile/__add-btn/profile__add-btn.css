@@ -7,13 +7,17 @@
   height: 50px;
   background: #000;
   cursor: pointer;
+  padding: 0;
+  align-self: center;
+  justify-self: center;
 }
 
 .profile__add-btn::after {
   content:'';
   position: absolute;
-  top: 14px;
-  left: 74px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 2px;
   height: 22px;
   background: #fff;
@@ -22,8 +26,9 @@
 .profile__add-btn::before {
   content:'';
   position: absolute;
-  top: 24px;
-  left: 64px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 22px;
   height: 2px;
   background: #fff;
@@ -35,24 +40,14 @@
 
 @media all and (max-width: 767px) {
   .profile__add-btn {
-    margin-top: 36px;
     width: 282px;
   }
 
   .profile__add-btn::after {
-    content:'';
-    top: 17px;
-    left: 140px;
     height: 16px;
-    background: #fff;
   }
 
   .profile__add-btn::before {
-    content:'';
-    position: absolute;
-    top: 24px;
-    left: 133px;
     width: 16px;
-    background: #fff;
   }
 }

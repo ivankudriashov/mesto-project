@@ -1,9 +1,8 @@
 .header__logo {
   width: 142px;
   height: 33px;
-  background: url(../../../icons/logo.svg) center center / cover no-repeat;
+  background: url(../../../images/icons/logo.svg) center center / cover no-repeat;
 }
-
 
 @media all and (max-width: 425px) {
   .header__logo {

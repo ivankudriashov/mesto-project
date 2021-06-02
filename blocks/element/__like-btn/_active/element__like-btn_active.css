@@ -1,7 +1,3 @@
 .element__like-btn_active {
-  background: url(../../../../icons/heart_active.svg) center no-repeat;
-  width: 25px;
-  height: 19px;
-  border: none;
-  cursor: pointer;
+  background: url(../../../../images/icons/heart_active.svg) center no-repeat;
 }

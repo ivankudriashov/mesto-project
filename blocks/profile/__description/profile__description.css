@@ -4,6 +4,9 @@
   font-size: 18px;
   line-height: 22px;
   color: #FFFFFF;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @media all and (max-width: 767px) {
@@ -16,5 +19,6 @@
 @media all and (max-width: 500px) {
   .profile__description {
     text-align: center;
+    padding-left: 24px;
   }
 }
