@@ -12,6 +12,8 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       formCards = popupCards.querySelector('.popup__form'),
       popupSaveCards = popupCards.querySelector('.popup__btn'),
 
+      popupPhoto = document.querySelector('#popup_photo'),
+      popupPhotoClosed = popupPhoto.querySelector('.popup__close'),
 
       cardsList = document.querySelector('.elements__list'),
       placeInput = document.querySelector('input[name=place_name]'),
@@ -87,19 +89,37 @@ openPopup(profileAddBtn, popupCards);
 closePopup(popupCardsClosed, popupCards);
 
 function createCard(title, link) {
-  const cardTemplate = document.querySelector('#card-template').content;
-  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+  const cardTemplate = document.querySelector('#card-template').content,
+        cardElement = cardTemplate.querySelector('.element').cloneNode(true),
+        elementImage = cardElement.querySelector('.element__image'),
+        elementTitle = cardElement.querySelector('.element__title'),
+        cardLikeBtn = cardElement.querySelector('.element__like-btn'),
+        cardDeleteBtn = cardElement.querySelector('.element__delete-btn'),
+        open = openPopup(elementImage, popupPhoto);
 
-  cardElement.querySelector('.element__title').textContent = title;
-  cardElement.querySelector('.element__image').setAttribute('src', link);
 
-  cardElement.querySelector('.element__like-btn').addEventListener('click', function(evt) {
+  elementTitle.textContent = title;
+  elementImage.setAttribute('src', link);
+
+  cardLikeBtn.addEventListener('click', function(evt) {
     evt.target.classList.toggle('element__like-btn_active');
   });
 
-  cardElement.querySelector('.element__delete-btn').addEventListener('click', function() {
+  cardDeleteBtn.addEventListener('click', function() {
     cardElement.remove();
   });
+
+  elementImage.addEventListener('click', () => {
+    const popupImage = popupPhoto.querySelector('.popup__image');
+    const popupCaption = popupPhoto.querySelector('.popup__caption');
+
+    popupImage.setAttribute('src', link);
+    popupCaption.textContent = title;
+
+    open;
+
+    closePopup(popupPhotoClosed, popupPhoto);
+  }) ;
 
   return cardElement
 }
@@ -136,4 +156,3 @@ formCards.addEventListener('submit', (evt) => {
 });
 
 closePopup(popupSaveCards, popupCards);
-
