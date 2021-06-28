@@ -16,8 +16,6 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       popupPhotoClosed = popupPhoto.querySelector('.popup__close'),
 
       cardsList = document.querySelector('.elements__list'),
-      placeInput = document.querySelector('input[name=place_name]'),
-      linkInput = document.querySelector('input[name=place_link]'),
 
       initialCards = [
         {
@@ -97,7 +95,6 @@ function createCard(title, link) {
         cardDeleteBtn = cardElement.querySelector('.element__delete-btn'),
         open = openPopup(elementImage, popupPhoto);
 
-
   elementTitle.textContent = title;
   elementImage.setAttribute('src', link);
 
@@ -134,22 +131,22 @@ cardsList.innerHTML = '';
 
 initialCards.reverse();
 
-const cardContainer = cardsList;
-
 initialCards.forEach ((item) => {
   const title = item.name;
   const link = item.link;
 
-  addCard(title, link, cardContainer);
+  addCard(title, link, cardsList);
 });
 
 formCards.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  const title = placeInput.value;
-  const link = linkInput.value;
+  const placeInput = document.querySelector('input[name=place_name]'),
+        linkInput = document.querySelector('input[name=place_link]'),
+        title = placeInput.value,
+        link = linkInput.value;
 
-  addCard(title, link, cardContainer);
+  addCard(title, link, cardsList);
 
   placeInput.value = '';
   linkInput.value = '';
