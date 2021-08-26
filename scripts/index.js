@@ -125,3 +125,4 @@ popupSaveCards.addEventListener('click', () => closePopup(popupCards));
 popupPhotoClosed.addEventListener('click', () => closePopup(popupPhoto));
 
 showDefaultCards();
+
