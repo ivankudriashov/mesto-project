@@ -6,6 +6,8 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       formProfile = popupProfile.querySelector('.popup__form'),
       popupSaveProfile = popupProfile.querySelector('.popup__btn'),
 
+      popup = document.querySelectorAll('.popup'),
+
       nameInput = document.querySelector('input[name=name]'),
       jobInput = document.querySelector('input[name=status]'),
       profileName = document.querySelector('.profile__name'),
@@ -37,10 +39,12 @@ function closePopup(popup) {
     popup.classList.remove('popup_opened');
 }
 
+
+
 function openPopupProfile() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
-      openPopup(popupProfile)
+  openPopup(popupProfile);
 }
 
 function submitFormProfile(evt) {
@@ -123,6 +127,22 @@ popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
 popupSaveCards.addEventListener('click', () => closePopup(popupCards));
 
 popupPhotoClosed.addEventListener('click', () => closePopup(popupPhoto));
+
+popup.forEach(item => {
+  item.addEventListener('click', (evt) => {
+    if(evt.target.classList.contains('popup')) {
+      closePopup(item);
+    }
+  })
+})
+
+popup.forEach(item => {
+  document.addEventListener('keydown', (evt) => {
+    if(evt.key == 'Escape') {
+      closePopup(item);
+    }
+  })
+})
 
 showDefaultCards();
 
