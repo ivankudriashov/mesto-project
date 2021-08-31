@@ -8,8 +8,9 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
 
       popup = document.querySelectorAll('.popup'),
 
-      nameInput = document.querySelector('input[name=name]'),
-      jobInput = document.querySelector('input[name=status]'),
+      profileForm = document.querySelector('[name=profile_form]'),
+      nameInput = document.querySelector('input[name=profile_name]'),
+      jobInput = document.querySelector('input[name=profile_status]'),
       profileName = document.querySelector('.profile__name'),
       profileDescription = document.querySelector('.profile__description'),
 
@@ -46,6 +47,9 @@ function openPopupProfile() {
   jobInput.value = profileDescription.textContent;
   openPopup(popupProfile);
 }
+    /* popupSaveProfile.setAttribute('disabled', true);
+    popupSaveProfile.classList.add('popup__btn_disabled'); */
+
 
 function submitFormProfile(evt) {
   evt.preventDefault();
