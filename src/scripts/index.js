@@ -1,9 +1,12 @@
-'use strict';
+/* 'use strict'; */
 
+import '../pages/index.css';
 import {enableValidation} from '../components/validate.js'
 import {addCard, showDefaultCards} from '../components/card.js'
 import {openPopupProfile, submitFormProfile} from '../components/modal.js'
 import {openPopup, closePopup} from '../components/utils.js'
+
+
 
 const profileEditBtn = document.querySelector('.profile__edit-btn'),
 
