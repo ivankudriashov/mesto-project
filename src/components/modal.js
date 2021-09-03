@@ -1,4 +1,4 @@
-import {openPopup} from './utils.js'
+import {openPopup, closePopup} from './utils.js'
 
 const popupProfile = document.querySelector('#popup_profile'),
       nameInput = document.querySelector('input[name=profile_name]'),
@@ -19,4 +19,18 @@ function submitFormProfile(evt) {
   profileDescription.textContent = jobInput.value;
 }
 
-export {openPopupProfile, submitFormProfile}
+function closeEscPopup(evt) {
+  if(evt.key === 'Escape') {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
+}
+
+function closeClickOverlayPopup(evt) {
+  if(evt.target.classList.contains('popup')) {
+    const popup = document.querySelector('.popup_opened');
+    closePopup(popup);
+  }
+}
+
+export {openPopupProfile, submitFormProfile, closeEscPopup, closeClickOverlayPopup}

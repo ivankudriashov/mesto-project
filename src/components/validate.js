@@ -1,3 +1,6 @@
+import {closePopup} from './utils.js'
+
+const popupProfile = document.querySelector('#popup_profile');
 
 function showErrorMessage(form, input, errorMessage, {inputErrorClass, errorClass}){
   const errorElement = form.querySelector(`.${input.id}-error`);
@@ -51,16 +54,23 @@ function toggleButtonState(inputList, buttonElement, {inactiveButtonClass}) {
   }
 };
 
+function resetValidation(card, inactiveButtonClass) {
+  const saveBtn = card.querySelector('.popup__btn');
+
+  saveBtn.classList.add(inactiveButtonClass);
+}
+
 function enableValidation( { formSelector, ...rest} ) {
   const forms = Array.from(document.querySelectorAll(formSelector));
 
   forms.forEach(form => {
     form.addEventListener('submit', (evt) => {
       evt.preventDefault();
+      closePopup(popupProfile);
     })
 
     setEventListeners(form, rest);
   })
 };
 
-export { enableValidation };
+export { enableValidation, resetValidation };

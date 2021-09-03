@@ -1,7 +1,7 @@
 /* 'use strict'; */
 
 import '../pages/index.css';
-import {enableValidation} from '../components/validate.js'
+import {enableValidation, resetValidation} from '../components/validate.js'
 import {addCard, showDefaultCards} from '../components/card.js'
 import {openPopupProfile, submitFormProfile} from '../components/modal.js'
 import {openPopup, closePopup} from '../components/utils.js'
@@ -13,10 +13,9 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       popupProfile = document.querySelector('#popup_profile'),
       popupProfileClosed = popupProfile.querySelector('.popup__close'),
       formProfile = popupProfile.querySelector('.popup__form'),
-      popupSaveProfile = popupProfile.querySelector('.popup__btn'),
 
-      popup = document.querySelectorAll('.popup'),
       profileAddBtn = document.querySelector('.profile__add-btn'),
+
       popupCards = document.querySelector('#popup_cards'),
       popupCardsClosed = popupCards.querySelector('.popup__close'),
       formCards = popupCards.querySelector('.popup__form'),
@@ -38,26 +37,6 @@ profileEditBtn.addEventListener('click', openPopupProfile)
 
 popupProfileClosed.addEventListener('click', () => closePopup(popupProfile))
 
-popupSaveProfile.addEventListener('click', () => closePopup(popupProfile))
-
-//popup's alternative close
-
-popup.forEach(item => {
-  item.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup')) {
-      closePopup(item);
-    }
-  })
-})
-
-popup.forEach(item => {
-  document.addEventListener('keydown', (evt) => {
-    if(evt.key == 'Escape') {
-      closePopup(item);
-    }
-  })
-})
-
 // card's
 
 formCards.addEventListener('submit', (evt) => {
@@ -71,7 +50,10 @@ formCards.addEventListener('submit', (evt) => {
   formCards.reset();
 });
 
-profileAddBtn.addEventListener('click', () => openPopup(popupCards));
+profileAddBtn.addEventListener('click', () => {
+  openPopup(popupCards);
+  resetValidation(popupCards, 'popup__btn_disabled');
+});
 
 popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
 
