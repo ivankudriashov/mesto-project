@@ -91,3 +91,47 @@ enableValidation({
   inputErrorClass: 'popup__form-item_type_error',
   errorClass: 'popup__error_visible'
 });
+
+
+// fetch
+
+const config = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-1',
+  headers: {
+    authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
+    'Content-Type': 'application/json'
+  }
+}
+
+
+
+fetch(`${config.baseUrl}/users/me`, {
+  headers: config.headers
+  })
+  .then(res => res.json())
+  .then((result) => {
+    console.log(result);
+  });
+
+/* fetch('https://nomoreparties.co/v1/plus-cohort-1/cards', {
+    headers: {
+      authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0'
+    }
+  })
+  .then(res => res.json())
+  .then((result) => {
+    console.log(result);
+  }); */
+
+
+/* fetch('https://nomoreparties.co/v1/plus-cohort-1/users/me', {
+  method: 'PATCH',
+  headers: {
+    authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Marie Skłodowska Curie',
+    about: 'Physicist and Chemist'
+  })
+}); */
