@@ -47,6 +47,11 @@ formCards.addEventListener('submit', (evt) => {
     link: linkInput.value
   }, cardsList);
 
+  addCardToServer({
+    name: placeInput.value,
+    link: linkInput.value
+  });
+
   formCards.reset();
 });
 
@@ -60,8 +65,6 @@ popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
 popupSaveCards.addEventListener('click', () => closePopup(popupCards));
 
 popupPhotoClosed.addEventListener('click', () => closePopup(popupPhoto));
-
-showDefaultCards();
 
 // form's validation
 
@@ -77,6 +80,11 @@ enableValidation({
 
 // fetch
 
+
+const profileName = document.querySelector('.profile__name'),
+      profileDescription = document.querySelector('.profile__description'),
+      profileAvatar = document.querySelector('.profile__avatar');
+
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-1',
   headers: {
@@ -85,35 +93,73 @@ const config = {
   }
 }
 
+function renderName(name) {
+  profileName.textContent = name;
+}
 
+function renderDescription(description) {
+  profileDescription.textContent = description;
+}
+
+function renderAvatar(img) {
+  profileAvatar.src = img;
+}
 
 fetch(`${config.baseUrl}/users/me`, {
   headers: config.headers
   })
-  .then(res => res.json())
+  .then(res => {
+    if(res.ok){
+      return res.json()
+    }
+    return Promise.reject(res.status)
+  })
   .then((result) => {
-    console.log(result);
+    renderName(result.name);
+    renderDescription(result.about);
+    renderAvatar(result.avatar);
   });
 
-/* fetch('https://nomoreparties.co/v1/plus-cohort-1/cards', {
-    headers: {
-      authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0'
-    }
+fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers
   })
   .then(res => res.json())
   .then((result) => {
-    console.log(result);
-  }); */
+    console.log(result)
+    showDefaultCards(result);
+  });
+
+export function changeProfile(name, description) {
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: name,
+      about: description
+    })
+  });
+}
+
+function addCardToServer(data) {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: 'POST',
+    headers: config.headers,
+    body: JSON.stringify({
+      name: data.name,
+      link: data.link
+    })
+  });
+}
 
 
-/* fetch('https://nomoreparties.co/v1/plus-cohort-1/users/me', {
-  method: 'PATCH',
-  headers: {
-    authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    name: 'Marie Skłodowska Curie',
-    about: 'Physicist and Chemist'
+
+/* fetch(`${config.baseUrl}/cards/613622bad6608b00b787ed1d`, {
+    method: 'DELETE',
+    headers: config.headers
   })
-}); */
+  .then((res) => {
+    res.json()
+  })
+  .then((data) => {
+    console.log(data)
+  }) */

@@ -16,11 +16,11 @@
     <main class="content">
       <section class="profile page__block-centering">
         <div class="profile__wrapper">
-          <img src="<%=require('./images/Avatar/Avatar.jpg')%>" alt="аватар" class="profile__avatar">
+          <img src="" alt="аватар" class="profile__avatar">
           <div class="profile__info">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name"></h1>
             <button type="button" class="profile__edit-btn"></button>
-            <p class="profile__description">Исследователь океана</p>
+            <p class="profile__description"></p>
           </div>
         </div>
         <button type="button" class="profile__add-btn"></button>
@@ -38,9 +38,9 @@
         <button type="button" class="popup__close"></button>
         <h3 class="popup__title">Редактировать профиль</h3>
         <form name="profile_form" class="popup__form" action="#" novalidate>
-          <input name="profile_name" value="Жак-Ив Кусто" placeholder="Ваше имя" type="text" required class="popup__form-item" id="name-input" minlength="2" maxlength="40">
+          <input name="profile_name" placeholder="Ваше имя" type="text" required class="popup__form-item" id="name-input" minlength="2" maxlength="40">
           <span class="popup__error name-input-error"></span>
-          <input name="profile_status" value="Исследователь океана" placeholder="Ваш статус" type="text" required class="popup__form-item" id="status-input" minlength="2" maxlength="200">
+          <input name="profile_status" placeholder="Ваш статус" type="text" required class="popup__form-item" id="status-input" minlength="2" maxlength="200">
           <span class="popup__error status-input-error"></span>
           <button type="submit" class="popup__btn">Сохранить</button>
         </form>

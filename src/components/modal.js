@@ -1,4 +1,5 @@
 import {openPopup, closePopup} from './utils.js'
+import {changeProfile} from './../scripts/index.js'
 
 const popupProfile = document.querySelector('#popup_profile'),
       nameInput = document.querySelector('input[name=profile_name]'),
@@ -17,6 +18,8 @@ function submitFormProfile(evt) {
 
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
+
+  changeProfile(nameInput.value, jobInput.value);
 }
 
 function closeEscPopup(evt) {

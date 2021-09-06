@@ -1,6 +1,7 @@
 .profile__wrapper {
   display: grid;
   grid-template-columns: 120px 1fr;
+  grid-template-rows: 120px;
   column-gap: 30px;
 }
 

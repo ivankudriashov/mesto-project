@@ -1,5 +1,5 @@
-import {initialCards} from './initial-сards.js'
 import {openPopup} from './utils.js'
+
 
 const popupImage = document.querySelector('.popup__image'),
       popupCaption = document.querySelector('.popup__caption'),
@@ -43,11 +43,14 @@ function addCard(cardData, cardContainer) {
   cardContainer.prepend(card);
 }
 
-function showDefaultCards() {
-  initialCards.reverse();
+function showDefaultCards(cards) {
+  cards.
 
-  initialCards.forEach ((item) => {
-    addCard(item, cardsList);
+  cards.forEach ((item) => {
+    addCard({
+      name: item.name,
+      link: item.link
+    }, cardsList);
   });
 }
 
