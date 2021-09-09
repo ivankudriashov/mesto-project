@@ -1,4 +1,5 @@
 import {openPopup} from './utils.js'
+import {countLikes} from './../scripts/index.js'
 
 
 const popupImage = document.querySelector('.popup__image'),
@@ -12,7 +13,10 @@ function createCard(cardData) {
         elementImage = cardElement.querySelector('.element__image'),
         elementTitle = cardElement.querySelector('.element__title'),
         cardLikeBtn = cardElement.querySelector('.element__like-btn'),
-        cardDeleteBtn = cardElement.querySelector('.element__delete-btn');
+        cardDeleteBtn = cardElement.querySelector('.element__delete-btn'),
+        cardLikeCounter = cardElement.querySelector('.element__like-counter');
+
+  cardLikeCounter.textContent = '0';
 
   elementImage.addEventListener('click', () => openPopup(popupPhoto));
 
@@ -41,17 +45,36 @@ function addCard(cardData, cardContainer) {
   const card = createCard(cardData);
 
   cardContainer.prepend(card);
+
+  if(!(cardData.id == '9dd3254462498bd2b7f2ff31')) {
+    const cardDeleteBtn = document.querySelector('.element__delete-btn');
+    cardDeleteBtn.remove();
+  }
 }
 
-function showDefaultCards(cards) {
-  cards.
+function showDefaultLikes(cards) {
+  const cardLikeCounter = document.querySelectorAll('.element__like-counter');
 
-  cards.forEach ((item) => {
-    addCard({
-      name: item.name,
-      link: item.link
-    }, cardsList);
+  cards.reverse();
+
+  cards.forEach((item, i) => {
+    cardLikeCounter.forEach(() => {
+      cardLikeCounter[i].textContent = item.likes.length;
+    })
   });
 }
 
-export {addCard, showDefaultCards}
+function showDefaultCards(cards) {
+  cards.reverse();
+
+  cards.forEach((item) => {
+    addCard({
+      name: item.name,
+      link: item.link,
+      id: item.owner._id
+    }, cardsList);
+
+  });
+}
+
+export {addCard, showDefaultCards, showDefaultLikes}

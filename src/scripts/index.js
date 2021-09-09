@@ -2,7 +2,7 @@
 
 import '../pages/index.css';
 import {enableValidation, resetValidation} from '../components/validate.js'
-import {addCard, showDefaultCards} from '../components/card.js'
+import {addCard, showDefaultCards, showDefaultLikes} from '../components/card.js'
 import {openPopupProfile, submitFormProfile} from '../components/modal.js'
 import {openPopup, closePopup} from '../components/utils.js'
 
@@ -44,7 +44,8 @@ formCards.addEventListener('submit', (evt) => {
 
   addCard({
     name: placeInput.value,
-    link: linkInput.value
+    link: linkInput.value,
+    id: '9dd3254462498bd2b7f2ff31'
   }, cardsList);
 
   addCardToServer({
@@ -85,6 +86,8 @@ const profileName = document.querySelector('.profile__name'),
       profileDescription = document.querySelector('.profile__description'),
       profileAvatar = document.querySelector('.profile__avatar');
 
+
+
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-1',
   headers: {
@@ -120,14 +123,25 @@ fetch(`${config.baseUrl}/users/me`, {
     renderAvatar(result.avatar);
   });
 
-fetch(`${config.baseUrl}/cards`, {
+function getCardsFromServer() {
+  fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
   .then(res => res.json())
   .then((result) => {
     console.log(result)
     showDefaultCards(result);
+    showDefaultLikes(result);
+
+    const cardDeleteBtn = document.querySelector('.element__delete-btn');
+    cardDeleteBtn.addEventListener('click', () => {
+      deleteCard(result);
+    })
+    console.log(result._id)
   });
+}
+
+getCardsFromServer();
 
 export function changeProfile(name, description) {
   return fetch(`${config.baseUrl}/users/me`, {
@@ -151,9 +165,8 @@ function addCardToServer(data) {
   });
 }
 
-
-
-/* fetch(`${config.baseUrl}/cards/613622bad6608b00b787ed1d`, {
+function deleteCard(id) {
+  return fetch(`${config.baseUrl}/cards/${id}`, {
     method: 'DELETE',
     headers: config.headers
   })
@@ -162,4 +175,7 @@ function addCardToServer(data) {
   })
   .then((data) => {
     console.log(data)
-  }) */
+  })
+}
+
+
