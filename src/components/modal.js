@@ -7,6 +7,12 @@ const popupProfile = document.querySelector('#popup_profile'),
       profileName = document.querySelector('.profile__name'),
       profileDescription = document.querySelector('.profile__description');
 
+
+
+/* function openPopupAvatar() {
+  openPopup(popupAvatar)
+} */
+
 function openPopupProfile() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
@@ -21,6 +27,7 @@ function submitFormProfile(evt) {
 
   changeProfile(nameInput.value, jobInput.value);
 }
+
 
 function closeEscPopup(evt) {
   if(evt.key === 'Escape') {

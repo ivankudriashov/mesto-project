@@ -27,7 +27,18 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       popupPhoto = document.querySelector('#popup_photo'),
       popupPhotoClosed = popupPhoto.querySelector('.popup__close'),
 
-      cardsList = document.querySelector('.elements__list');
+      cardsList = document.querySelector('.elements__list'),
+
+      avatarButton = document.querySelector('.profile__avatar-button'),
+      popupAvatar = document.querySelector('#popup_avatar'),
+      popupAvatarClosed = popupAvatar.querySelector('.popup__close'),
+      formAvatar = popupAvatar.querySelector('.popup__form'),
+
+      avatarInput = document.querySelector('input[name=avatar_link]');
+
+const profileName = document.querySelector('.profile__name'),
+      profileDescription = document.querySelector('.profile__description'),
+      profileAvatar = document.querySelector('.profile__avatar');
 
 //profile's popup
 
@@ -37,21 +48,46 @@ profileEditBtn.addEventListener('click', openPopupProfile)
 
 popupProfileClosed.addEventListener('click', () => closePopup(popupProfile))
 
+
+formAvatar.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  changeAvatar(avatarInput.value)
+
+  profileAvatar.src = avatarInput.value;
+
+  formAvatar.reset();
+
+  closePopup(popupAvatar);
+});
+
+avatarButton.addEventListener('click', () => openPopup(popupAvatar))
+
+popupAvatarClosed.addEventListener('click', () => closePopup(popupAvatar))
+
+
+
+
+
 // card's
 
 formCards.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  addCard({
-    name: placeInput.value,
-    link: linkInput.value,
-    id: '9dd3254462498bd2b7f2ff31'
-  }, cardsList);
-
   addCardToServer({
     name: placeInput.value,
     link: linkInput.value
-  });
+  })
+  .then(res => res.json())
+  .then(res => {
+    addCard({
+      name: res.name,
+      link: res.link,
+      card_id: res._id,
+      id: '9dd3254462498bd2b7f2ff31',
+      card_likes: res.likes
+    }, cardsList)
+  })
 
   formCards.reset();
 });
@@ -82,10 +118,6 @@ enableValidation({
 // fetch
 
 
-const profileName = document.querySelector('.profile__name'),
-      profileDescription = document.querySelector('.profile__description'),
-      profileAvatar = document.querySelector('.profile__avatar');
-
 
 
 const config = {
@@ -108,36 +140,48 @@ function renderAvatar(img) {
   profileAvatar.src = img;
 }
 
-fetch(`${config.baseUrl}/users/me`, {
-  headers: config.headers
+const getData =  () => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    headers: config.headers
+    })
+    .then(res => {
+      if(res.ok){
+        return res.json()
+      }
+      return Promise.reject(res.status)
+    })
+}
+
+const getCardsData = () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers
   })
-  .then(res => {
-    if(res.ok){
-      return res.json()
-    }
-    return Promise.reject(res.status)
-  })
-  .then((result) => {
+  .then(res => res.json())
+}
+
+
+
+getData().then((result) => {
     renderName(result.name);
     renderDescription(result.about);
     renderAvatar(result.avatar);
   });
 
-function getCardsFromServer() {
-  fetch(`${config.baseUrl}/cards`, {
+export function getCardsFromServer() {
+  return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
   .then(res => res.json())
   .then((result) => {
-    console.log(result)
+
+    /* result.forEach(item => {
+      item.likes.forEach(item => {
+        console.log(item._id);
+      })
+    }) */
+
     showDefaultCards(result);
     showDefaultLikes(result);
-
-    const cardDeleteBtn = document.querySelector('.element__delete-btn');
-    cardDeleteBtn.addEventListener('click', () => {
-      deleteCard(result);
-    })
-    console.log(result._id)
   });
 }
 
@@ -154,6 +198,18 @@ export function changeProfile(name, description) {
   });
 }
 
+function changeAvatar(avatar) {
+  fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: avatar
+    })
+  })
+}
+
+
+
 function addCardToServer(data) {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
@@ -165,17 +221,14 @@ function addCardToServer(data) {
   });
 }
 
-function deleteCard(id) {
-  return fetch(`${config.baseUrl}/cards/${id}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-  .then((res) => {
-    res.json()
-  })
-  .then((data) => {
-    console.log(data)
-  })
-}
 
+fetch(`${config.baseUrl}/cards`, {
+  headers: config.headers
+})
+.then(res => res.json())
+.then(res => {
+  res.forEach(item => {
+    /* console.log(item) */
+  })
+})
 
