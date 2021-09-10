@@ -1,17 +1,13 @@
-import {openPopup, closePopup} from './utils.js'
-import {changeProfile} from './../scripts/index.js'
+import {openPopup, closePopup, renderLoading} from './utils.js'
+import {changeProfile} from './api.js'
 
 const popupProfile = document.querySelector('#popup_profile'),
       nameInput = document.querySelector('input[name=profile_name]'),
       jobInput = document.querySelector('input[name=profile_status]'),
       profileName = document.querySelector('.profile__name'),
+      popupSaveProfile = popupProfile.querySelector('.popup__btn'),
+
       profileDescription = document.querySelector('.profile__description');
-
-
-
-/* function openPopupAvatar() {
-  openPopup(popupAvatar)
-} */
 
 function openPopupProfile() {
   nameInput.value = profileName.textContent;
@@ -22,10 +18,16 @@ function openPopupProfile() {
 function submitFormProfile(evt) {
   evt.preventDefault();
 
+  renderLoading(true, popupSaveProfile);
+
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
 
-  changeProfile(nameInput.value, jobInput.value);
+  changeProfile(nameInput.value, jobInput.value)
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(renderLoading(false, popupSaveProfile))
 }
 
 

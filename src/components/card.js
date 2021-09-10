@@ -1,6 +1,5 @@
 import {openPopup} from './utils.js'
-import {reloadSite, getCardsFromServer} from './../scripts/index.js'
-
+import {addLike, removeLike, deleteCard} from '../components/api.js'
 
 const popupImage = document.querySelector('.popup__image'),
       popupCaption = document.querySelector('.popup__caption'),
@@ -24,35 +23,23 @@ function createCard(cardData) {
   elementImage.setAttribute('src', cardData.link);
   elementImage.setAttribute('alt', cardData.name);
 
-  function addLike(cardId) {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort-1/cards/likes/${cardId}`, {
-      method: 'PUT',
-      headers: {
-        authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(cardLikeCounter.textContent = String(+cardLikeCounter.textContent + 1))
-  }
-
-  function removeLike(cardId) {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort-1/cards/likes/${cardId}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(cardLikeCounter.textContent = String(+cardLikeCounter.textContent - 1))
-  }
-
   cardLikeBtn.addEventListener('click', function(evt) {
     if(evt.target.classList.contains('element__like-btn_active')){
       evt.target.classList.remove('element__like-btn_active');
-      removeLike(cardData.card_id);
+
+      removeLike(cardData.card_id)
+      .then(cardLikeCounter.textContent = String(+cardLikeCounter.textContent - 1))
+      .catch((err) => {
+        console.log(err);
+      });
     } else {
       evt.target.classList.add('element__like-btn_active');
-      addLike(cardData.card_id);
+
+      addLike(cardData.card_id)
+        .then(cardLikeCounter.textContent = String(+cardLikeCounter.textContent + 1))
+        .catch((err) => {
+          console.log(err);
+        });
     }
   });
 
@@ -63,23 +50,13 @@ function createCard(cardData) {
     }
   })
 
-  function deleteCard(id) {
-    return fetch(`https://nomoreparties.co/v1/plus-cohort-1/cards/${id}`, {
-      method: 'DELETE',
-      headers: {
-        authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
-        'Content-Type': 'application/json'
-      }
-    })
-  }
-
   cardDeleteBtn.addEventListener('click', function() {
-    cardElement.remove();
-
-    deleteCard(cardData.card_id);
+    deleteCard(cardData.card_id)
+      .then(cardElement.remove())
+      .catch((err) => {
+        console.log(err);
+      });
   });
-
-
 
   elementImage.addEventListener('click', () => {
     popupImage.setAttribute('src', cardData.link);
@@ -87,11 +64,13 @@ function createCard(cardData) {
     popupCaption.textContent = cardData.name;
   });
 
-
   return cardElement
 }
 
 function addCard(cardData, cardContainer) {
+
+
+
   const card = createCard(cardData);
 
   cardContainer.prepend(card);
@@ -123,6 +102,7 @@ function showDefaultLikes(cards) {
 function showDefaultCards(cards) {
   cards.reverse();
 
+
   cards.forEach((item) => {
     addCard({
       name: item.name,
@@ -131,7 +111,6 @@ function showDefaultCards(cards) {
       card_id: item._id,
       card_likes: item.likes
     }, cardsList);
-
   });
 }
 

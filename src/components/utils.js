@@ -13,4 +13,12 @@ function closePopup(popup) {
 
 }
 
-export {openPopup, closePopup}
+function renderLoading(isLoading, button){
+  if(isLoading){
+    button.textContent = 'Сохранение...'
+  } else {
+    button.textContent = 'Сохранить'
+  }
+}
+
+export {openPopup, closePopup, renderLoading}
