@@ -10,7 +10,6 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeEscPopup);
   document.removeEventListener('click', closeClickOverlayPopup);
-
 }
 
 function renderLoading(isLoading, button){

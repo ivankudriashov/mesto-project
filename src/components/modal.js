@@ -6,7 +6,6 @@ const popupProfile = document.querySelector('#popup_profile'),
       jobInput = document.querySelector('input[name=profile_status]'),
       profileName = document.querySelector('.profile__name'),
       popupSaveProfile = popupProfile.querySelector('.popup__btn'),
-
       profileDescription = document.querySelector('.profile__description');
 
 function openPopupProfile() {
@@ -20,14 +19,17 @@ function submitFormProfile(evt) {
 
   renderLoading(true, popupSaveProfile);
 
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
-
   changeProfile(nameInput.value, jobInput.value)
+    .then(() => {
+      profileName.textContent = nameInput.value;
+      profileDescription.textContent = jobInput.value;
+      closePopup(popupProfile);
+    })
     .catch((err) => {
       console.log(err);
+      closePopup(popupProfile);
     })
-    .finally(renderLoading(false, popupSaveProfile))
+    .finally(() => renderLoading(false, popupSaveProfile))
 }
 
 

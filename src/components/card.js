@@ -1,5 +1,5 @@
 import {openPopup} from './utils.js'
-import {addLike, removeLike, deleteCard} from '../components/api.js'
+import {addLike, removeLike, deleteCard} from './api.js'
 
 const popupImage = document.querySelector('.popup__image'),
       popupCaption = document.querySelector('.popup__caption'),
@@ -25,18 +25,20 @@ function createCard(cardData) {
 
   cardLikeBtn.addEventListener('click', function(evt) {
     if(evt.target.classList.contains('element__like-btn_active')){
-      evt.target.classList.remove('element__like-btn_active');
-
       removeLike(cardData.card_id)
-      .then(cardLikeCounter.textContent = String(+cardLikeCounter.textContent - 1))
-      .catch((err) => {
-        console.log(err);
-      });
+        .then(() => {
+          evt.target.classList.remove('element__like-btn_active');
+          cardLikeCounter.textContent = String(+cardLikeCounter.textContent - 1)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
-      evt.target.classList.add('element__like-btn_active');
-
       addLike(cardData.card_id)
-        .then(cardLikeCounter.textContent = String(+cardLikeCounter.textContent + 1))
+        .then(() => {
+          evt.target.classList.add('element__like-btn_active');
+          cardLikeCounter.textContent = String(+cardLikeCounter.textContent + 1)
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -44,15 +46,14 @@ function createCard(cardData) {
   });
 
   cardData.card_likes.forEach(item => {
-    if(item._id == '9dd3254462498bd2b7f2ff31'){
-      console.log(item._id);
+    if(item._id == cardData.userId){
       cardLikeBtn.classList.add('element__like-btn_active');
     }
   })
 
   cardDeleteBtn.addEventListener('click', function() {
     deleteCard(cardData.card_id)
-      .then(cardElement.remove())
+      .then(() => cardElement.remove())
       .catch((err) => {
         console.log(err);
       });
@@ -68,14 +69,11 @@ function createCard(cardData) {
 }
 
 function addCard(cardData, cardContainer) {
-
-
-
   const card = createCard(cardData);
 
   cardContainer.prepend(card);
 
-  if(!(cardData.id == '9dd3254462498bd2b7f2ff31')) {
+  if(!(cardData.id == cardData.userId)) {
     const cardDeleteBtn = document.querySelector('.element__delete-btn');
     cardDeleteBtn.remove();
   }
@@ -99,9 +97,8 @@ function showDefaultLikes(cards) {
   });
 }
 
-function showDefaultCards(cards) {
+function showDefaultCards(cards, isUserId) {
   cards.reverse();
-
 
   cards.forEach((item) => {
     addCard({
@@ -109,7 +106,8 @@ function showDefaultCards(cards) {
       link: item.link,
       id: item.owner._id,
       card_id: item._id,
-      card_likes: item.likes
+      card_likes: item.likes,
+      userId: isUserId
     }, cardsList);
   });
 }

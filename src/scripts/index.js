@@ -56,16 +56,16 @@ formAvatar.addEventListener('submit', (evt) => {
   renderLoading(true, popupSaveAvatar);
 
   changeAvatar(avatarInput.value)
+    .then(() => {
+      profileAvatar.src = avatarInput.value;
+      formAvatar.reset();
+      closePopup(popupAvatar);
+    })
     .catch((err) => {
       console.log(err);
+      closePopup(popupAvatar);
     })
-    .finally(renderLoading(false, popupSaveAvatar))
-
-  profileAvatar.src = avatarInput.value;
-
-  formAvatar.reset();
-
-  closePopup(popupAvatar);
+    .finally(() => renderLoading(false, popupSaveAvatar))
 });
 
 avatarButton.addEventListener('click', () => openPopup(popupAvatar))
@@ -88,16 +88,18 @@ formCards.addEventListener('submit', (evt) => {
       name: res.name,
       link: res.link,
       card_id: res._id,
-      id: '9dd3254462498bd2b7f2ff31',
+      userId: res.owner._id,
+      id: res.owner._id,
       card_likes: res.likes
     }, cardsList)
+    formCards.reset();
+    closePopup(popupCards)
   })
   .catch((err) => {
     console.log(err);
+    closePopup(popupCards)
   })
-  .finally(renderLoading(false, popupSaveCards))
-
-  formCards.reset();
+  .finally(() => renderLoading(false, popupSaveCards))
 });
 
 profileAddBtn.addEventListener('click', () => {
@@ -106,8 +108,6 @@ profileAddBtn.addEventListener('click', () => {
 });
 
 popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
-
-popupSaveCards.addEventListener('click', () => closePopup(popupCards));
 
 popupPhotoClosed.addEventListener('click', () => closePopup(popupPhoto));
 
@@ -122,23 +122,20 @@ enableValidation({
   errorClass: 'popup__error_visible'
 });
 
-getInitialProfile()
-  .then((result) => {
-    profileName.textContent = result.name;
-    profileDescription.textContent = result.about;
-    profileAvatar.src = result.avatar;
+Promise.all([
+  getInitialProfile(),
+  getInitialCards()
+])
+  .then(([data, cards]) =>{
+    const isUserId = data._id;
 
+    profileName.textContent = data.name;
+    profileDescription.textContent = data.about;
+    profileAvatar.src = data.avatar;
+
+    showDefaultCards(cards, isUserId);
+    showDefaultLikes(cards);
   })
-  .catch((err) => {
+  .catch((err)=>{
     console.log(err);
-  });
-
-getInitialCards()
-  .then((result) => {
-    showDefaultCards(result);
-    showDefaultLikes(result);
   })
-  .catch((err) => {
-    console.log(err);
-  });
-
