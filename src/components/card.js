@@ -94,7 +94,7 @@ class Card{
           cardDeleteBtn = this._element.querySelector('.element__delete-btn'),
           cardLikeCounter = this._element.querySelector('.element__like-counter');
 
-    cardLikeBtn.addEventListener('click', function(evt) {
+    cardLikeBtn.addEventListener('click', (evt) => {
       if(evt.target.classList.contains('element__like-btn_active')){
         api.removeLike(this._data.card_id)
           .then(() => {
@@ -116,7 +116,7 @@ class Card{
       }
     });
 
-    cardDeleteBtn.addEventListener('click', function() {
+    cardDeleteBtn.addEventListener('click', () => {
       api.deleteCard(this._data.card_id)
         .then(() => this._element.remove())
         .catch((err) => {
@@ -187,19 +187,6 @@ function addCard(data, cardContainer) {
   console.log(cardData.name);
 } */
 
-function removeCard(data, cardContainer) {
-
-  const card = createCard(data);
-
-  cardContainer.remove(card);
-}
-
-/* function removeCard(cardData, cardContainer) {
-  const card = createCard(cardData);
-
-  cardContainer.remove(card);
-} */
-
 function showDefaultLikes(cards) {
   const cardLikeCounter = document.querySelectorAll('.element__like-counter');
 
@@ -227,4 +214,4 @@ function showDefaultCards(cards, isUserId) {
   });
 }
 
-export {addCard, removeCard, showDefaultCards, showDefaultLikes}
+export {addCard, showDefaultCards, showDefaultLikes}
