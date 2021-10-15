@@ -9,7 +9,7 @@ const popupImage = document.querySelector('.popup__image'),
 
 
 
-
+/*
 function createCard(cardData) {
   const cardTemplate = document.querySelector('#card-template').content,
         cardElement = cardTemplate.querySelector('.element').cloneNode(true),
@@ -70,7 +70,7 @@ function createCard(cardData) {
   });
 
   return cardElement
-}
+} */
 
 class Card{
   constructor({ data }, cardSelector){

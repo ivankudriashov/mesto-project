@@ -1,7 +1,8 @@
 'use strict';
 
 import '../pages/index.css';
-import {enableValidation, resetValidation} from '../components/validate.js'
+/* import {enableValidation, resetValidation} from '../components/validate.js' */
+import {FormValidator} from '../components/validate.js'
 import {addCard, showDefaultCards, showDefaultLikes} from '../components/card.js'
 import {openPopupProfile, submitFormProfile} from '../components/modal.js'
 /* import {getInitialProfile, getInitialCards, changeAvatar, addCardToServer} from '../components/api.js' */
@@ -113,7 +114,7 @@ formCards.addEventListener('submit', (evt) => {
 
 profileAddBtn.addEventListener('click', () => {
   openPopup(popupCards);
-  resetValidation(popupCards, 'popup__btn_disabled');
+  /* resetValidation(popupCards, 'popup__btn_disabled'); */
 });
 
 popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
@@ -122,14 +123,44 @@ popupPhotoClosed.addEventListener('click', () => closePopup(popupPhoto));
 
 // form's validation
 
-enableValidation({
+const formProfileValidation = new FormValidator({
+  inputSelector: '.popup__form-item',
+  submitButtonSelector: '.popup__btn',
+  inactiveButtonClass: 'popup__btn_disabled',
+  inputErrorClass: 'popup__form-item_type_error',
+  errorClass: 'popup__error_visible'
+}, formProfile);
+
+const formCardValidation = new FormValidator({
+  inputSelector: '.popup__form-item',
+  submitButtonSelector: '.popup__btn',
+  inactiveButtonClass: 'popup__btn_disabled',
+  inputErrorClass: 'popup__form-item_type_error',
+  errorClass: 'popup__error_visible'
+}, formCards);
+
+const formAvatarValidation = new FormValidator({
+  inputSelector: '.popup__form-item',
+  submitButtonSelector: '.popup__btn',
+  inactiveButtonClass: 'popup__btn_disabled',
+  inputErrorClass: 'popup__form-item_type_error',
+  errorClass: 'popup__error_visible'
+}, formAvatar);
+
+formProfileValidation.enableValidation();
+
+formCardValidation.enableValidation();
+
+formAvatarValidation.enableValidation();
+
+/* enableValidation({
   formSelector: '.popup__form',
   inputSelector: '.popup__form-item',
   submitButtonSelector: '.popup__btn',
   inactiveButtonClass: 'popup__btn_disabled',
   inputErrorClass: 'popup__form-item_type_error',
   errorClass: 'popup__error_visible'
-});
+}); */
 
 Promise.all([
   api.getInitialProfile(),
