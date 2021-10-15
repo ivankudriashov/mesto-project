@@ -1,5 +1,7 @@
 import {openPopup, closePopup, renderLoading} from './utils.js'
-import {changeProfile} from './api.js'
+/* import {changeProfile} from './api.js' */
+import {api} from '../scripts/index.js'
+
 
 const popupProfile = document.querySelector('#popup_profile'),
       nameInput = document.querySelector('input[name=profile_name]'),
@@ -19,7 +21,7 @@ function submitFormProfile(evt) {
 
   renderLoading(true, popupSaveProfile);
 
-  changeProfile(nameInput.value, jobInput.value)
+  api.changeProfile(nameInput.value, jobInput.value)
     .then(() => {
       profileName.textContent = nameInput.value;
       profileDescription.textContent = jobInput.value;
@@ -31,7 +33,6 @@ function submitFormProfile(evt) {
     })
     .finally(() => renderLoading(false, popupSaveProfile))
 }
-
 
 function closeEscPopup(evt) {
   if(evt.key === 'Escape') {

@@ -1,10 +1,11 @@
-/* 'use strict'; */
+'use strict';
 
 import '../pages/index.css';
 import {enableValidation, resetValidation} from '../components/validate.js'
 import {addCard, showDefaultCards, showDefaultLikes} from '../components/card.js'
 import {openPopupProfile, submitFormProfile} from '../components/modal.js'
-import {getInitialProfile, getInitialCards, changeAvatar, addCardToServer} from '../components/api.js'
+/* import {getInitialProfile, getInitialCards, changeAvatar, addCardToServer} from '../components/api.js' */
+import {Api} from '../components/api.js'
 import {openPopup, closePopup, renderLoading} from '../components/utils.js'
 
 
@@ -42,6 +43,14 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       profileDescription = document.querySelector('.profile__description'),
       profileAvatar = document.querySelector('.profile__avatar');
 
+export const api = new Api({
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-1',
+  headers: {
+    authorization: 'f04d3593-eb68-4f0d-80f9-8a27e4ddd7b0',
+    'Content-Type': 'application/json'
+  }
+});
+
 //profile's popup
 
 formProfile.addEventListener('submit', submitFormProfile);
@@ -55,7 +64,7 @@ formAvatar.addEventListener('submit', (evt) => {
 
   renderLoading(true, popupSaveAvatar);
 
-  changeAvatar(avatarInput.value)
+  api.changeAvatar(avatarInput.value)
     .then(() => {
       profileAvatar.src = avatarInput.value;
       formAvatar.reset();
@@ -79,7 +88,7 @@ formCards.addEventListener('submit', (evt) => {
 
   renderLoading(true, popupSaveCards);
 
-  addCardToServer({
+  api.addCardToServer({
     name: placeInput.value,
     link: linkInput.value
   })
@@ -123,8 +132,8 @@ enableValidation({
 });
 
 Promise.all([
-  getInitialProfile(),
-  getInitialCards()
+  api.getInitialProfile(),
+  api.getInitialCards()
 ])
   .then(([data, cards]) =>{
     const isUserId = data._id;
