@@ -79,11 +79,11 @@ function addCard(cardData, cardContainer) {
   }
 }
 
-function removeCard(cardData, cardContainer) {
+/* function removeCard(cardData, cardContainer) {
   const card = createCard(cardData);
 
   cardContainer.remove(card);
-}
+} */
 
 function showDefaultLikes(cards) {
   const cardLikeCounter = document.querySelectorAll('.element__like-counter');
@@ -112,4 +112,4 @@ function showDefaultCards(cards, isUserId) {
   });
 }
 
-export {addCard, removeCard, showDefaultCards, showDefaultLikes}
+export {addCard, /* removeCard, */ showDefaultCards, showDefaultLikes}
