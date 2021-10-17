@@ -1,15 +1,12 @@
 'use strict';
 
 import '../pages/index.css';
-/* import {enableValidation, resetValidation} from '../components/validate.js' */
 import {FormValidator} from '../components/validate.js'
-import {addCard, showDefaultCards, showDefaultLikes} from '../components/card.js'
+import { Card } from '../components/card.js'
+import { Section } from '../components/section.js'
 import {openPopupProfile, submitFormProfile} from '../components/modal.js'
-/* import {getInitialProfile, getInitialCards, changeAvatar, addCardToServer} from '../components/api.js' */
 import {Api} from '../components/api.js'
 import {openPopup, closePopup, renderLoading} from '../components/utils.js'
-
-
 
 const profileEditBtn = document.querySelector('.profile__edit-btn'),
 
@@ -94,14 +91,16 @@ formCards.addEventListener('submit', (evt) => {
     link: linkInput.value
   })
   .then(res => {
-    addCard({
+    const card = new Card({
       name: res.name,
       link: res.link,
       card_id: res._id,
       userId: res.owner._id,
       id: res.owner._id,
       card_likes: res.likes
-    }, cardsList)
+    } , '#card-template');
+
+    cardsList.prepend(card.generate());
     formCards.reset();
     closePopup(popupCards)
   })
@@ -114,7 +113,6 @@ formCards.addEventListener('submit', (evt) => {
 
 profileAddBtn.addEventListener('click', () => {
   openPopup(popupCards);
-  /* resetValidation(popupCards, 'popup__btn_disabled'); */
 });
 
 popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
@@ -153,28 +151,44 @@ formCardValidation.enableValidation();
 
 formAvatarValidation.enableValidation();
 
-/* enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__form-item',
-  submitButtonSelector: '.popup__btn',
-  inactiveButtonClass: 'popup__btn_disabled',
-  inputErrorClass: 'popup__form-item_type_error',
-  errorClass: 'popup__error_visible'
-}); */
-
 Promise.all([
   api.getInitialProfile(),
   api.getInitialCards()
 ])
-  .then(([data, cards]) =>{
-    const isUserId = data._id;
+  .then(([userData, cards]) =>{
+    const isUserId = userData._id;
 
-    profileName.textContent = data.name;
-    profileDescription.textContent = data.about;
-    profileAvatar.src = data.avatar;
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileAvatar.src = userData.avatar;
 
-    showDefaultCards(cards, isUserId);
-    showDefaultLikes(cards);
+    const defaultCards = new Section({
+      data: cards,
+      renderer: (item) => {
+        const card = new Card({
+          name: item.name,
+          link: item.link,
+          id: item.owner._id,
+          card_id: item._id,
+          card_likes: item.likes,
+          userId: isUserId
+        }, '#card-template');
+
+        const cardElement = card.generate();
+        defaultCards.setItem(cardElement);
+
+        if(!(item.owner._id == isUserId)) {
+          const cardDeleteBtn = document.querySelector('.element__delete-btn');
+          cardDeleteBtn.remove();
+        }
+
+        const cardLikeCounter = document.querySelector('.element__like-counter');
+
+        cardLikeCounter.textContent = item.likes.length;
+      }
+    }, '.elements__list');
+
+    defaultCards.renderDefaultItems();
   })
   .catch((err)=>{
     console.log(err);

@@ -1,5 +1,4 @@
 import {openPopup, closePopup, renderLoading} from './utils.js'
-/* import {changeProfile} from './api.js' */
 import {api} from '../scripts/index.js'
 
 
