@@ -7,11 +7,11 @@ import { Section } from '../components/section.js'
 import {Popup} from '../components/popup.js'
 import {Api} from '../components/api.js'
 import {PopupWithForm} from '../components/popupWithForm.js'
+import {UserInfo} from '../components/userInfo.js'
 
 const profileEditBtn = document.querySelector('.profile__edit-btn'),
 
       popupProfile = document.querySelector('#popup_profile'),
-      popupProfileClosed = popupProfile.querySelector('.popup__close'),
       formProfile = popupProfile.querySelector('.popup__form'),
       popupSaveProfile = popupProfile.querySelector('.popup__btn'),
 
@@ -22,7 +22,6 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       profileAddBtn = document.querySelector('.profile__add-btn'),
 
       popupCards = document.querySelector('#popup_cards'),
-      popupCardsClosed = popupCards.querySelector('.popup__close'),
       formCards = popupCards.querySelector('.popup__form'),
       popupSaveCards = popupCards.querySelector('.popup__btn'),
 
@@ -30,13 +29,11 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       linkInput = document.querySelector('input[name=place_link]'),
 
       popupPhoto = document.querySelector('#popup_photo'),
-      popupPhotoClosed = popupPhoto.querySelector('.popup__close'),
 
       cardsList = document.querySelector('.elements__list'),
 
       avatarButton = document.querySelector('.profile__avatar-button'),
       popupAvatar = document.querySelector('#popup_avatar'),
-      popupAvatarClosed = popupAvatar.querySelector('.popup__close'),
       formAvatar = popupAvatar.querySelector('.popup__form'),
       popupSaveAvatar = popupAvatar.querySelector('.popup__btn'),
 
@@ -55,6 +52,11 @@ function renderLoading(isLoading, button){
   }
 }
 
+const input = function (data) {
+  nameInput.value = data.name;
+  jobInput.value = data.about;
+}
+
 export const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-1',
   headers: {
@@ -63,15 +65,16 @@ export const api = new Api({
   }
 });
 
+const userInfo = new UserInfo(profileName, profileDescription);
+
 //profile
 
 const profilePopup = new PopupWithForm(popupProfile, () => {
   renderLoading(true, popupSaveProfile);
 
   api.changeProfile(nameInput.value, jobInput.value)
-    .then(() => {
-      profileName.textContent = nameInput.value;
-      profileDescription.textContent = jobInput.value;
+    .then((res) => {
+      userInfo.setUserInfo(res);
       profilePopup.close();
     })
     .catch((err) => {
@@ -82,6 +85,8 @@ const profilePopup = new PopupWithForm(popupProfile, () => {
 })
 
 profileEditBtn.addEventListener('click', () => {
+  userInfo.getUserInfo(api.getInitialProfile.bind(api), input)
+
   profilePopup.open();
 })
 
@@ -145,6 +150,8 @@ profileAddBtn.addEventListener('click', () => {
 
 cardsPopup.setEventListeners();
 
+//image's popup
+
 export const popupImg = new Popup(popupPhoto);
 
 popupImg.setEventListeners();
@@ -188,8 +195,7 @@ Promise.all([
   .then(([userData, cards]) =>{
     const isUserId = userData._id;
 
-    profileName.textContent = userData.name;
-    profileDescription.textContent = userData.about;
+    userInfo.setUserInfo(userData);
     profileAvatar.src = userData.avatar;
 
     const defaultCards = new Section({
