@@ -4,15 +4,20 @@ import '../pages/index.css';
 import {FormValidator} from '../components/validate.js'
 import { Card } from '../components/card.js'
 import { Section } from '../components/section.js'
-import {openPopupProfile, submitFormProfile} from '../components/modal.js'
+import {Popup} from '../components/popup.js'
 import {Api} from '../components/api.js'
-import {openPopup, closePopup, renderLoading} from '../components/utils.js'
+import {PopupWithForm} from '../components/popupWithForm.js'
 
 const profileEditBtn = document.querySelector('.profile__edit-btn'),
 
       popupProfile = document.querySelector('#popup_profile'),
       popupProfileClosed = popupProfile.querySelector('.popup__close'),
       formProfile = popupProfile.querySelector('.popup__form'),
+      popupSaveProfile = popupProfile.querySelector('.popup__btn'),
+
+      nameInput = document.querySelector('input[name=profile_name]'),
+      jobInput = document.querySelector('input[name=profile_status]'),
+
 
       profileAddBtn = document.querySelector('.profile__add-btn'),
 
@@ -41,6 +46,15 @@ const profileEditBtn = document.querySelector('.profile__edit-btn'),
       profileDescription = document.querySelector('.profile__description'),
       profileAvatar = document.querySelector('.profile__avatar');
 
+
+function renderLoading(isLoading, button){
+  if(isLoading){
+    button.textContent = 'Сохранение...'
+  } else {
+    button.textContent = 'Сохранить'
+  }
+}
+
 export const api = new Api({
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-1',
   headers: {
@@ -49,41 +63,56 @@ export const api = new Api({
   }
 });
 
-//profile's popup
+//profile
 
-formProfile.addEventListener('submit', submitFormProfile);
+const profilePopup = new PopupWithForm(popupProfile, () => {
+  renderLoading(true, popupSaveProfile);
 
-profileEditBtn.addEventListener('click', openPopupProfile)
+  api.changeProfile(nameInput.value, jobInput.value)
+    .then(() => {
+      profileName.textContent = nameInput.value;
+      profileDescription.textContent = jobInput.value;
+      profilePopup.close();
+    })
+    .catch((err) => {
+      console.log(err);
+      profilePopup.close();
+    })
+    .finally(() => renderLoading(false, popupSaveProfile));
+})
 
-popupProfileClosed.addEventListener('click', () => closePopup(popupProfile))
+profileEditBtn.addEventListener('click', () => {
+  profilePopup.open();
+})
 
-formAvatar.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+profilePopup.setEventListeners();
 
+//avatar
+
+const avatarPopup = new PopupWithForm(popupAvatar, () => {
   renderLoading(true, popupSaveAvatar);
 
   api.changeAvatar(avatarInput.value)
     .then(() => {
       profileAvatar.src = avatarInput.value;
-      formAvatar.reset();
-      closePopup(popupAvatar);
+      avatarPopup.close();
     })
     .catch((err) => {
       console.log(err);
-      closePopup(popupAvatar);
+      avatarPopup.close();
     })
-    .finally(() => renderLoading(false, popupSaveAvatar))
+    .finally(() => renderLoading(false, popupSaveAvatar));
 });
 
-avatarButton.addEventListener('click', () => openPopup(popupAvatar))
+avatarButton.addEventListener('click', () => {
+  avatarPopup.open();
+})
 
-popupAvatarClosed.addEventListener('click', () => closePopup(popupAvatar))
+avatarPopup.setEventListeners();
 
 // card's
 
-formCards.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
+const cardsPopup = new PopupWithForm(popupCards, () => {
   renderLoading(true, popupSaveCards);
 
   api.addCardToServer({
@@ -101,23 +130,24 @@ formCards.addEventListener('submit', (evt) => {
     } , '#card-template');
 
     cardsList.prepend(card.generate());
-    formCards.reset();
-    closePopup(popupCards)
+    cardsPopup.close();
   })
   .catch((err) => {
     console.log(err);
-    closePopup(popupCards)
+    cardsPopup.close();
   })
-  .finally(() => renderLoading(false, popupSaveCards))
+  .finally(() => renderLoading(false, popupSaveCards));
 });
 
 profileAddBtn.addEventListener('click', () => {
-  openPopup(popupCards);
-});
+  cardsPopup.open();
+})
 
-popupCardsClosed.addEventListener('click', () => closePopup(popupCards));
+cardsPopup.setEventListeners();
 
-popupPhotoClosed.addEventListener('click', () => closePopup(popupPhoto));
+export const popupImg = new Popup(popupPhoto);
+
+popupImg.setEventListeners();
 
 // form's validation
 

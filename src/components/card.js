@@ -1,12 +1,13 @@
-import {openPopup} from './utils.js'
+import {popupImg} from '../scripts/index.js'
 import {api} from '../scripts/index.js'
 
 const popupImage = document.querySelector('.popup__image'),
       popupCaption = document.querySelector('.popup__caption'),
       popupPhoto = document.querySelector('#popup_photo');
 
+
 export class Card{
-  constructor(data , cardSelector){
+  constructor(data, cardSelector){
     this._cardSelector = cardSelector;
     this._data = data;
   }
@@ -76,7 +77,7 @@ export class Card{
 
     cardLikeCounter.textContent = '0';
 
-    elementImage.addEventListener('click', () => openPopup(popupPhoto));
+    elementImage.addEventListener('click', () => popupImg.open());
 
     elementTitle.textContent = this._data.name;
     elementImage.setAttribute('src', this._data.link);
