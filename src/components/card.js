@@ -1,15 +1,10 @@
-import {popupImg} from '../scripts/index.js'
 import {api} from '../scripts/index.js'
 
-const popupImage = document.querySelector('.popup__image'),
-      popupCaption = document.querySelector('.popup__caption'),
-      popupPhoto = document.querySelector('#popup_photo');
-
-
 export class Card{
-  constructor(data, cardSelector){
+  constructor(data, cardSelector, handleCardClick){
     this._cardSelector = cardSelector;
     this._data = data;
+    this._handleCardClick = handleCardClick;
   }
 
   _getElement() {
@@ -58,11 +53,7 @@ export class Card{
         });
     });
 
-    elementImage.addEventListener('click', () => {
-      popupImage.setAttribute('src', this._data.link);
-      popupImage.setAttribute('alt', this._data.name);
-      popupCaption.textContent = this._data.name;
-    });
+    elementImage.addEventListener('click', this._handleCardClick);
   }
 
   generate() {
@@ -76,8 +67,6 @@ export class Card{
     this._setEventListeners();
 
     cardLikeCounter.textContent = '0';
-
-    elementImage.addEventListener('click', () => popupImg.open());
 
     elementTitle.textContent = this._data.name;
     elementImage.setAttribute('src', this._data.link);

@@ -1,13 +1,13 @@
 'use strict';
 
 import '../pages/index.css';
-import {FormValidator} from '../components/validate.js'
+import { FormValidator } from '../components/validate.js'
 import { Card } from '../components/card.js'
 import { Section } from '../components/section.js'
-import {Popup} from '../components/popup.js'
-import {Api} from '../components/api.js'
-import {PopupWithForm} from '../components/popupWithForm.js'
-import {UserInfo} from '../components/userInfo.js'
+import { Api } from '../components/api.js'
+import { PopupWithForm } from '../components/popupWithForm.js'
+import { PopupWithImage } from '../components/popupWithImage.js'
+import { UserInfo } from '../components/userInfo.js'
 
 const profileEditBtn = document.querySelector('.profile__edit-btn'),
 
@@ -152,7 +152,7 @@ cardsPopup.setEventListeners();
 
 //image's popup
 
-export const popupImg = new Popup(popupPhoto);
+export const popupImg = new PopupWithImage(popupPhoto);
 
 popupImg.setEventListeners();
 
@@ -208,7 +208,9 @@ Promise.all([
           card_id: item._id,
           card_likes: item.likes,
           userId: isUserId
-        }, '#card-template');
+        }, '#card-template', () => {
+          popupImg.open(item);
+        });
 
         const cardElement = card.generate();
         defaultCards.setItem(cardElement);
