@@ -67,6 +67,12 @@ export const api = new Api({
 
 const userInfo = new UserInfo(profileName, profileDescription);
 
+//image's popup
+
+export const popupImg = new PopupWithImage(popupPhoto);
+
+popupImg.setEventListeners();
+
 //profile
 
 const profilePopup = new PopupWithForm(popupProfile, () => {
@@ -126,13 +132,16 @@ const cardsPopup = new PopupWithForm(popupCards, () => {
   })
   .then(res => {
     const card = new Card({
-      name: res.name,
-      link: res.link,
-      card_id: res._id,
-      userId: res.owner._id,
-      id: res.owner._id,
-      card_likes: res.likes
-    } , '#card-template');
+        name: res.name,
+        link: res.link,
+        card_id: res._id,
+        userId: res.owner._id,
+        id: res.owner._id,
+        card_likes: res.likes
+      } , '#card-template',
+      () => {
+        popupImg.open(res)
+      });
 
     cardsList.prepend(card.generate());
     cardsPopup.close();
@@ -149,12 +158,6 @@ profileAddBtn.addEventListener('click', () => {
 })
 
 cardsPopup.setEventListeners();
-
-//image's popup
-
-export const popupImg = new PopupWithImage(popupPhoto);
-
-popupImg.setEventListeners();
 
 // form's validation
 
