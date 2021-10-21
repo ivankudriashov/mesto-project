@@ -17,4 +17,4 @@ HTML5, CSS3, Grid layout, Flexbox, Javascript
 **Ссылка**
 https://ivankudriashov.github.io/mesto-project/index.html
 
-https://github.com/ch1ppyone
+Напарник: https://github.com/ch1ppyone
