@@ -52,7 +52,7 @@ function renderLoading(isLoading, button){
   }
 }
 
-const input = function (data) {
+const setInput = function (data) {
   nameInput.value = data.name;
   jobInput.value = data.about;
 }
@@ -85,13 +85,12 @@ const profilePopup = new PopupWithForm(popupProfile, () => {
     })
     .catch((err) => {
       console.log(err);
-      profilePopup.close();
     })
     .finally(() => renderLoading(false, popupSaveProfile));
 })
 
 profileEditBtn.addEventListener('click', () => {
-  userInfo.getUserInfo(api.getInitialProfile.bind(api), input)
+  userInfo.getUserInfo(api.getInitialProfile.bind(api), setInput)
 
   profilePopup.open();
 })
@@ -110,7 +109,6 @@ const avatarPopup = new PopupWithForm(popupAvatar, () => {
     })
     .catch((err) => {
       console.log(err);
-      avatarPopup.close();
     })
     .finally(() => renderLoading(false, popupSaveAvatar));
 });
@@ -131,24 +129,12 @@ const cardsPopup = new PopupWithForm(popupCards, () => {
     link: linkInput.value
   })
   .then(res => {
-    const card = new Card({
-        name: res.name,
-        link: res.link,
-        card_id: res._id,
-        userId: res.owner._id,
-        id: res.owner._id,
-        card_likes: res.likes
-      } , '#card-template',
-      () => {
-        popupImg.open(res)
-      });
-
+    const card =  createCard(res,  undefined);
     cardsList.prepend(card.generate());
     cardsPopup.close();
   })
   .catch((err) => {
     console.log(err);
-    cardsPopup.close();
   })
   .finally(() => renderLoading(false, popupSaveCards));
 });
@@ -191,6 +177,21 @@ formCardValidation.enableValidation();
 
 formAvatarValidation.enableValidation();
 
+function createCard (item, isUserId )
+{
+  return new Card({
+    name: item.name,
+    link: item.link,
+    id: item.owner._id,
+    card_id: item._id,
+    card_likes: item.likes,
+    userId: isUserId
+  } , '#card-template', () => {
+    popupImg.open(item);
+  }
+  );
+}
+
 Promise.all([
   api.getInitialProfile(),
   api.getInitialCards()
@@ -204,17 +205,8 @@ Promise.all([
     const defaultCards = new Section({
       data: cards,
       renderer: (item) => {
-        const card = new Card({
-          name: item.name,
-          link: item.link,
-          id: item.owner._id,
-          card_id: item._id,
-          card_likes: item.likes,
-          userId: isUserId
-        }, '#card-template', () => {
-          popupImg.open(item);
-        });
-
+ isUserId
+        const card = createCard(item,  isUserId);
         const cardElement = card.generate();
         defaultCards.setItem(cardElement);
 
